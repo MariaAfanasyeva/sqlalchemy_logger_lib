@@ -2,6 +2,7 @@ language: python
 python:
   - 3.8
 
+# Update pip to the latest version
 before_install:
   - python --version
   - pip install -U pip
