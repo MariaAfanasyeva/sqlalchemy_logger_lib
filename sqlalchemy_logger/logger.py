@@ -29,24 +29,37 @@ def check_owner(instance):
 
 
 def session_handler(session):
-    session_info = {}
-    session_instance = ""
-    method = ""
+    sessions_info = {}
+    session_instances = []
+    methods = []
+    counter = 0
     for instance in session.new:
-        method = "creating"
-        session_instance = instance
+        methods.append("creating")
+        session_instances.append(instance)
+        counter += 1
     for instance in session.deleted:
-        method = "deleting"
-        session_instance = instance
+        methods.append("deleting")
+        session_instances.append(instance)
+        counter += 1
     for instance in session.dirty:
-        method = "updating"
-        session_instance = instance
-    owner_id = check_owner(session_instance)
-    session_info["user_id"] = owner_id
-    session_info["method"] = method
-    session_info["model"] = session_instance.__tablename__
-    session_info["raw_id"] = session_instance.id
-    return session_info
+        methods.append("updating")
+        session_instances.append(instance)
+        counter += 1
+    instance_method = list(zip(session_instances, methods))
+    for i, instance in enumerate(instance_method):
+        session_info = {}
+        owner_id = check_owner(instance[0])
+        session_info['user_id'] = owner_id
+        session_info['method'] = instance[1]
+        session_info['model'] = instance[0].__tablename__
+        session_info['raw_id'] = instance[0].id
+        sessions_info[i] = session_info
+    # owner_id = check_owner(session_instance)
+    # session_info["user_id"] = owner_id
+    # session_info["method"] = method
+    # session_info["model"] = session_instance.__tablename__
+    # session_info["raw_id"] = session_instance.id
+    return sessions_info
 
 
 class Logger:
@@ -56,39 +69,42 @@ class Logger:
 
     def session_before_flush(self, session, flush_context, instanses):
         about_session = session_handler(session)
-        before_request_log(
-            self.app,
-            about_session["model"],
-            about_session["user_id"],
-            about_session["method"],
-            about_session["raw_id"],
-        )
+        for instance in about_session.values():
+            before_request_log(
+                self.app,
+                instance["model"],
+                instance["user_id"],
+                instance["method"],
+                instance["raw_id"],
+            )
 
     def listen_before_flush(self):
         event.listen(Session, "before_flush", self.session_before_flush)
 
     def session_after_flush(self, session, flush_context):
         about_session = session_handler(session)
-        after_request_log(
-            self.app,
-            about_session["model"],
-            about_session["user_id"],
-            about_session["method"],
-            about_session["raw_id"],
-        )
+        for instance in about_session.values():
+            after_request_log(
+                self.app,
+                instance["model"],
+                instance["user_id"],
+                instance["method"],
+                instance["raw_id"],
+            )
 
     def listen_after_flush(self):
         event.listen(Session, "after_flush", self.session_after_flush)
 
     def session_after_rollback(self, session):
         about_session = session_handler(session)
-        before_rollback_log(
-            self.app,
-            about_session["model"],
-            about_session["user_id"],
-            about_session["method"],
-            about_session["raw_id"],
-        )
+        for instance in about_session.values():
+            before_rollback_log(
+                self.app,
+                instance["model"],
+                instance["user_id"],
+                instance["method"],
+                instance["raw_id"],
+            )
 
     def listen_after_rollback(self):
         event.listen(Session, "after_rollback", self.session_after_rollback)
