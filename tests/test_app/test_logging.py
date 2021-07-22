@@ -3,12 +3,18 @@ import logging
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
 from sqlalchemy_logger.logger import Logger
+from dotenv import find_dotenv, load_dotenv
+import os
 
 from .models import Bot, Base
 
 
+load_dotenv(find_dotenv(".env.dev"))
+
+
 def make_engine():
-    engine = create_engine("postgresql://postgres:root@localhost:5432/test_lib")
+    SQLALCHEMY_DATABASE_URI = os.environ.get("SQLALCHEMY_DATABASE_URI")
+    engine = create_engine(SQLALCHEMY_DATABASE_URI)
     Session = sessionmaker(bind=engine)
     session = Session()
     Base.metadata.create_all(engine)
