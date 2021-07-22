@@ -1,21 +1,24 @@
 from sqlalchemy import event
 from sqlalchemy.orm import Session
+import logging
+
+logger = logging.getLogger(__name__)
 
 
-def before_request_log(app, model, user_id, method, raw_id):
-    app.logger.info(
+def before_request_log(model, user_id, method, raw_id):
+    logger.info(
         f"User with id={user_id} has started {method} model {model} (raw ID={raw_id})"
     )
 
 
-def after_request_log(app, model, user_id, method, raw_id):
-    app.logger.info(
+def after_request_log(model, user_id, method, raw_id):
+    logger.info(
         f"User with id={user_id} has finished {method} model {model} (raw ID={raw_id})"
     )
 
 
-def before_rollback_log(app, model, user_id, method, raw_id):
-    app.logger.info(
+def before_rollback_log(model, user_id, method, raw_id):
+    logger.info(
         f"Before rollback user with id={user_id} has started {method} model {model} (raw ID={raw_id})"
     )
 
@@ -54,24 +57,15 @@ def session_handler(session):
         session_info['model'] = instance[0].__tablename__
         session_info['raw_id'] = instance[0].id
         sessions_info[i] = session_info
-    # owner_id = check_owner(session_instance)
-    # session_info["user_id"] = owner_id
-    # session_info["method"] = method
-    # session_info["model"] = session_instance.__tablename__
-    # session_info["raw_id"] = session_instance.id
     return sessions_info
 
 
 class Logger:
 
-    def __init__(self, app):
-        self.app = app
-
     def session_before_flush(self, session, flush_context, instanses):
         about_session = session_handler(session)
         for instance in about_session.values():
             before_request_log(
-                self.app,
                 instance["model"],
                 instance["user_id"],
                 instance["method"],
@@ -85,7 +79,6 @@ class Logger:
         about_session = session_handler(session)
         for instance in about_session.values():
             after_request_log(
-                self.app,
                 instance["model"],
                 instance["user_id"],
                 instance["method"],
@@ -99,7 +92,6 @@ class Logger:
         about_session = session_handler(session)
         for instance in about_session.values():
             before_rollback_log(
-                self.app,
                 instance["model"],
                 instance["user_id"],
                 instance["method"],
