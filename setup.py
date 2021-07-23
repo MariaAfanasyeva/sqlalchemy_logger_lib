@@ -9,13 +9,13 @@ with open(path.join(HERE, 'README.md'), encoding='utf-8') as f:
     long_description = f.read()
 
 setup(
-    name="sqlalchemy-logger",
-    version="0.1.1",
+    name="SQLAlchemyLogging",
+    version="0.1.2",
     description="Logging library",
     long_description=long_description,
     long_description_content_type="text/markdown",
     author="Maryia Afanasyeva",
-    author_email="example@email.com",
+    author_email="masha.afanaseva@mail.ru",
     license="MIT",
     classifiers=[
         "Intended Audience :: Developers",
