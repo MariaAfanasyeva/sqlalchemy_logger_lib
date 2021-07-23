@@ -2,3 +2,4 @@ pytest==6.2.4
 python-dotenv==0.18.0
 SQLAlchemy==1.4.21
 psycopg2==2.9.1
+pre-commit==2.13.0
