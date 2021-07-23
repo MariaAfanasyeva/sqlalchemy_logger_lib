@@ -6,7 +6,6 @@ from sqlalchemy.orm import sessionmaker
 from sqlalchemy_logger.logger import Logger
 from dotenv import find_dotenv, load_dotenv
 import os
-
 from .models import Bot, Base
 
 
