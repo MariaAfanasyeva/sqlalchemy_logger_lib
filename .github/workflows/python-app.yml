@@ -29,3 +29,5 @@ jobs:
     - name: Test with pytest
       run: |
         pytest
+      env:
+        SQLALCHEMY_DATABASE_URI: ${{ secrets.SQLALCHEMY_DATABASE_URI }}
