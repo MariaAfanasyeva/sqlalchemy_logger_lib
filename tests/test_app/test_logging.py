@@ -88,7 +88,7 @@ def test_delete_bot(caplog):
                f'(raw ID={bot_id})' in caplog.text
 
 
-def create_update_delete_bot():
+def create_delete_bot():
     session = make_session()
     logger = Logger()
     logger.listen_after_flush()
@@ -96,9 +96,7 @@ def create_update_delete_bot():
     logger.listen_after_rollback()
     session.add(Bot('Harry Potter'))
     last_bot = session.query(Bot).order_by(Bot.id.desc()).first()
-    bot_to_update = session.query(Bot).get(3)
     last_bot_id = last_bot.id
-    bot_to_update.name = 'Ronald Weasley'
     session.delete(last_bot)
     session.commit()
     session.close()
@@ -107,15 +105,11 @@ def create_update_delete_bot():
 
 def test_create_update_delete_bot(caplog):
     caplog.set_level(logging.INFO)
-    bot_id = create_update_delete_bot()
+    bot_id = create_delete_bot()
     assert f'INFO     SQLAlchemyLogging:logger.py:9 User with id=None has started creating model bot ' \
                    f'(raw ID=None)' in caplog.text
     assert f'INFO     SQLAlchemyLogging:logger.py:15 User with id=None has finished creating model bot ' \
                f'(raw ID={bot_id})' in caplog.text
-    assert f'INFO     SQLAlchemyLogging:logger.py:9 User with id=None has started updating model bot ' \
-                   f'(raw ID=3)' in caplog.text
-    assert f'INFO     SQLAlchemyLogging:logger.py:15 User with id=None has finished updating model bot ' \
-               f'(raw ID=3)' in caplog.text
     assert f'INFO     SQLAlchemyLogging:logger.py:9 User with id=None has started deleting model bot ' \
                    f'(raw ID={bot_id})' in caplog.text
     assert f'INFO     SQLAlchemyLogging:logger.py:15 User with id=None has finished deleting model bot ' \
