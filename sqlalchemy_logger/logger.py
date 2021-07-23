@@ -2,7 +2,7 @@ from sqlalchemy import event
 from sqlalchemy.orm import Session
 import logging
 
-logger = logging.getLogger(__name__)
+logger = logging.getLogger("SQLAlchemyLogging")
 
 
 def before_request_log(model, user_id, method, raw_id):
@@ -31,7 +31,7 @@ def check_owner(instance):
     return owner_id
 
 
-def session_handler(session):
+def get_session_info(session):
     sessions_info = {}
     session_instances = []
     methods = []
@@ -63,8 +63,8 @@ def session_handler(session):
 class Logger:
 
     def session_before_flush(self, session, flush_context, instanses):
-        about_session = session_handler(session)
-        for instance in about_session.values():
+        session_info = get_session_info(session)
+        for instance in session_info.values():
             before_request_log(
                 instance["model"],
                 instance["user_id"],
@@ -76,8 +76,8 @@ class Logger:
         event.listen(Session, "before_flush", self.session_before_flush)
 
     def session_after_flush(self, session, flush_context):
-        about_session = session_handler(session)
-        for instance in about_session.values():
+        session_info = get_session_info(session)
+        for instance in session_info.values():
             after_request_log(
                 instance["model"],
                 instance["user_id"],
@@ -89,8 +89,8 @@ class Logger:
         event.listen(Session, "after_flush", self.session_after_flush)
 
     def session_after_rollback(self, session):
-        about_session = session_handler(session)
-        for instance in about_session.values():
+        session_info = get_session_info(session)
+        for instance in session_info.values():
             before_rollback_log(
                 instance["model"],
                 instance["user_id"],

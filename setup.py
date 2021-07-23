@@ -9,7 +9,7 @@ with open(path.join(HERE, 'README.md'), encoding='utf-8') as f:
     long_description = f.read()
 
 setup(
-    name="SQLAlchemyLogging",
+    name="sqlalchemy-logger",
     version="0.1.2",
     description="Logging library",
     long_description=long_description,

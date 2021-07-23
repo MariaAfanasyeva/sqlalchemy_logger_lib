@@ -1,3 +1,7 @@
 # Project exclude paths
 /venv/
 .env
+/.idea/
+/sqlalchemy_logger.egg-info/
+/build/
+/dist/
