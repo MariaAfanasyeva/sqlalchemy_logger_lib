@@ -9,7 +9,7 @@ import os
 from .models import Bot, Base
 
 
-load_dotenv(find_dotenv(".env.dev"))
+load_dotenv(find_dotenv(".env"))
 
 
 def make_session():
