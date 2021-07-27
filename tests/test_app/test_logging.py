@@ -41,11 +41,11 @@ def test_create_bot(caplog, make_session):
     caplog.set_level(logging.INFO)
     bot = create_bot(make_session)
     assert (
-        f"INFO     SQLAlchemyLogging:logger.py:9 User with id=None has started creating model bot "
+        f"INFO     SQLAlchemyLogging:logger.py:10 User with id=None has started creating model bot "
         f"(raw ID=None)" in caplog.text
     )
     assert (
-        f"INFO     SQLAlchemyLogging:logger.py:15 User with id=None has finished creating model bot "
+        f"INFO     SQLAlchemyLogging:logger.py:16 User with id=None has finished creating model bot "
         f"(raw ID={bot})" in caplog.text
     )
 
@@ -66,11 +66,11 @@ def test_update_bot(caplog, make_session):
     caplog.set_level(logging.INFO)
     update_bot(make_session)
     assert (
-        f"INFO     SQLAlchemyLogging:logger.py:9 User with id=None has started updating model bot "
+        f"INFO     SQLAlchemyLogging:logger.py:10 User with id=None has started updating model bot "
         f"(raw ID=1)" in caplog.text
     )
     assert (
-        f"INFO     SQLAlchemyLogging:logger.py:15 User with id=None has finished updating model bot "
+        f"INFO     SQLAlchemyLogging:logger.py:16 User with id=None has finished updating model bot "
         f"(raw ID=1)" in caplog.text
     )
 
@@ -93,11 +93,11 @@ def test_delete_bot(caplog, make_session):
     caplog.set_level(logging.INFO)
     bot_id = delete_bot(make_session)
     assert (
-        f"INFO     SQLAlchemyLogging:logger.py:9 User with id=None has started deleting model bot "
+        f"INFO     SQLAlchemyLogging:logger.py:10 User with id=None has started deleting model bot "
         f"(raw ID={bot_id})" in caplog.text
     )
     assert (
-        f"INFO     SQLAlchemyLogging:logger.py:15 User with id=None has finished deleting model bot "
+        f"INFO     SQLAlchemyLogging:logger.py:16 User with id=None has finished deleting model bot "
         f"(raw ID={bot_id})" in caplog.text
     )
 
@@ -121,18 +121,18 @@ def test_create_update_delete_bot(caplog, make_session):
     caplog.set_level(logging.INFO)
     bot_id = create_delete_bot(make_session)
     assert (
-        f"INFO     SQLAlchemyLogging:logger.py:9 User with id=None has started creating model bot "
+        f"INFO     SQLAlchemyLogging:logger.py:10 User with id=None has started creating model bot "
         f"(raw ID=None)" in caplog.text
     )
     assert (
-        f"INFO     SQLAlchemyLogging:logger.py:15 User with id=None has finished creating model bot "
+        f"INFO     SQLAlchemyLogging:logger.py:16 User with id=None has finished creating model bot "
         f"(raw ID={bot_id})" in caplog.text
     )
     assert (
-        f"INFO     SQLAlchemyLogging:logger.py:9 User with id=None has started deleting model bot "
+        f"INFO     SQLAlchemyLogging:logger.py:10 User with id=None has started deleting model bot "
         f"(raw ID={bot_id})" in caplog.text
     )
     assert (
-        f"INFO     SQLAlchemyLogging:logger.py:15 User with id=None has finished deleting model bot "
+        f"INFO     SQLAlchemyLogging:logger.py:16 User with id=None has finished deleting model bot "
         f"(raw ID={bot_id})" in caplog.text
     )
