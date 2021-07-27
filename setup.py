@@ -1,11 +1,11 @@
-from setuptools import setup
-
 from codecs import open
 from os import path
 
+from setuptools import setup
+
 HERE = path.abspath(path.dirname(__file__))
 
-with open(path.join(HERE, 'README.md'), encoding='utf-8') as f:
+with open(path.join(HERE, "README.md"), encoding="utf-8") as f:
     long_description = f.read()
 
 setup(
@@ -24,9 +24,9 @@ setup(
         "Programming Language :: Python :: 3",
         "Programming Language :: Python :: 3.8",
         "Programming Language :: Python :: 3.9",
-        "Operating System :: OS Independent"
+        "Operating System :: OS Independent",
     ],
     packages=["sqlalchemy_logger"],
     include_package_data=True,
-    install_requires=["SQLAlchemy"]
+    install_requires=["SQLAlchemy"],
 )

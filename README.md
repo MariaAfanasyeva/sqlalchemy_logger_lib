@@ -2,7 +2,7 @@
 
 A small library that provides sqlalchemy session logging.
 
-### Installation 
+### Installation
 
 `pip install sqlalchemy-logger`
 

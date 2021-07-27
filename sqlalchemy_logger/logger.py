@@ -1,6 +1,7 @@
+import logging
+
 from sqlalchemy import event
 from sqlalchemy.orm import Session
-import logging
 
 logger = logging.getLogger("SQLAlchemyLogging")
 
@@ -52,16 +53,15 @@ def get_session_info(session):
     for i, instance in enumerate(instance_method):
         session_info = {}
         owner_id = check_owner(instance[0])
-        session_info['user_id'] = owner_id
-        session_info['method'] = instance[1]
-        session_info['model'] = instance[0].__tablename__
-        session_info['raw_id'] = instance[0].id
+        session_info["user_id"] = owner_id
+        session_info["method"] = instance[1]
+        session_info["model"] = instance[0].__tablename__
+        session_info["raw_id"] = instance[0].id
         sessions_info[i] = session_info
     return sessions_info
 
 
 class Logger:
-
     def session_before_flush(self, session, flush_context, instanses):
         session_info = get_session_info(session)
         for instance in session_info.values():
